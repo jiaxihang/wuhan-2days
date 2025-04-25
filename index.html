@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>武汉之旅</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* 字体导入 - 修正Brittany字体导入 */
+        @import url('https://fonts.cdnfonts.com/css/brittany-signature');
+
+        /* 全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "KaiTi", "楷体", serif;
+        }
+
+        body {
+            background-color: #000;
+            color: #d4af37;
+            line-height: 1.6;
+        }
+
+        /* 装饰元素 */
+        .decorative-border {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+            border: 20px solid #d4af37;
+            opacity: 0.3;
+        }
+
+        .corner-decoration {
+            position: fixed;
+            width: 100px;
+            height: 100px;
+            border: 3px solid #d4af37;
+            z-index: 999;
+            pointer-events: none;
+        }
+
+        .corner-top-left {
+            top: 30px;
+            left: 30px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .corner-top-right {
+            top: 30px;
+            right: 30px;
+            border-left: none;
+            border-bottom: none;
+        }
+
+        .corner-bottom-left {
+            bottom: 30px;
+            left: 30px;
+            border-right: none;
+            border-top: none;
+        }
+
+        .corner-bottom-right {
+            bottom: 30px;
+            right: 30px;
+            border-left: none;
+            border-top: none;
+        }
+
+        /* 入口动画 */
+        .entrance {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 1.5s ease-out;
+        }
+
+        .entrance-content {
+            position: relative;
+            text-align: center;
+            padding: 3rem;
+            background-color: rgba(212, 175, 55, 0.05);
+            border-radius: 10px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.1);
+            width: 80%;
+            max-width: 600px;
+        }
+
+        .entrance h1 {
+            color: #d4af37;
+            font-size: 3.5rem;
+            margin-bottom: 2rem;
+            letter-spacing: 0.5rem;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 1.5s ease forwards 0.5s;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+            font-weight: 700;
+        }
+
+        .guide-title {
+            font-family: "KaiTi", "楷体", serif;
+            color: #d4af37;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            letter-spacing: 2px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 1.5s ease forwards 1s;
+        }
+
+        .signature {
+            font-family: 'Brittany Signature', cursive;
+            font-size: 2.8rem;
+            color: rgba(212, 175, 55, 0.85);
+            margin-top: 0.5rem;
+            margin-bottom: 2rem;
+            text-shadow: 0 0 8px rgba(212, 175, 55, 0.2);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 1.5s ease forwards 1.2s;
+        }
+
+        .entrance-btn {
+            margin-top: 1rem;
+            padding: 1rem 3rem;
+            background-color: transparent;
+            border: 2px solid #d4af37;
+            color: #d4af37;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 1.5s ease forwards 1.5s;
+            position: relative;
+            overflow: hidden;
+            border-radius: 50px;
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+
+        .entrance-btn::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .entrance-btn:hover {
+            background-color: #d4af37;
+            color: #000;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+        }
+
+        .entrance-btn:hover::before {
+            left: 100%;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 主内容 */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3rem;
+            opacity: 0;
+            transition: opacity 1s ease;
+            background-color: rgba(0, 0, 0, 0.9);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 10px;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, transparent, #d4af37, transparent);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
+            padding-bottom: 2rem;
+        }
+
+        header::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #d4af37, transparent);
+        }
+
+        header h1 {
+            font-size: 3rem;
+            color: #d4af37;
+            margin-bottom: 1rem;
+            letter-spacing: 0.3rem;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+            font-weight: 700;
+        }
+
+        .day-container {
+            margin-bottom: 5rem;
+            position: relative;
+        }
+
+        .day-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 3rem;
+            justify-content: center;
+        }
+
+        .day-title h2 {
+            font-size: 2.2rem;
+            color: #d4af37;
+            margin: 0 1.5rem;
+            font-weight: 700;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+            position: relative;
+            display: inline-block;
+        }
+
+        .day-title .line {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #d4af37, transparent);
+            width: 100px;
+        }
+
+        .location {
+            text-align: center;
+            font-size: 1.8rem;
+            color: #d4af37;
+            margin: 3rem 0;
+            font-weight: 600;
+            letter-spacing: 0.3rem;
+            position: relative;
+            display: inline-block;
+            padding: 0.5rem 3rem;
+        }
+
+        .location::before,
+        .location::after {
+            content: "❦";
+            color: #d4af37;
+            font-size: 1.5rem;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .location::before {
+            left: 0;
+        }
+
+        .location::after {
+            right: 0;
+        }
+
+        .menu-item {
+            margin-bottom: 2.5rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            position: relative;
+            text-align: center;
+        }
+
+        .menu-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .menu-title {
+            font-size: 1.5rem;
+            color: #d4af37;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            display: inline-block;
+            position: relative;
+        }
+
+        .menu-title::after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 1px;
+            background-color: #d4af37;
+        }
+
+        .menu-tag {
+            font-size: 0.9rem;
+            color: rgba(212, 175, 55, 0.8);
+            font-weight: normal;
+            display: inline-block;
+            margin-left: 0.5rem;
+        }
+
+        /* 返回顶部按钮 */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            background-color: rgba(212, 175, 55, 0.2);
+            color: #d4af37;
+            border: 1px solid #d4af37;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 100;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+            font-size: 1.5rem;
+        }
+
+        .back-to-top.visible {
+            opacity: 0.9;
+        }
+
+        .back-to-top:hover {
+            opacity: 1;
+            transform: translateY(-5px);
+            background-color: rgba(212, 175, 55, 0.3);
+        }
+
+        /* 页脚签名 */
+        .footer-signature {
+            text-align: center;
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .footer-guide {
+            font-family: "KaiTi", "楷体", serif;
+            color: #d4af37;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-signature .signature {
+            font-family: 'Brittany Signature', cursive;
+            font-size: 2.8rem;
+            color: rgba(212, 175, 55, 0.85);
+            text-shadow: 0 0 8px rgba(212, 175, 55, 0.2);
+            animation: none;
+            opacity: 1;
+            transform: none;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .decorative-border {
+                border-width: 10px;
+            }
+
+            .corner-decoration {
+                width: 60px;
+                height: 60px;
+            }
+
+            .container {
+                padding: 2rem;
+                margin: 1rem;
+                width: calc(100% - 2rem);
+            }
+
+            header h1 {
+                font-size: 2.2rem;
+            }
+
+            .day-title h2 {
+                font-size: 1.8rem;
+            }
+
+            .location {
+                font-size: 1.5rem;
+                padding: 0.5rem 2rem;
+            }
+
+            .entrance h1 {
+                font-size: 2.5rem;
+            }
+
+            .signature,
+            .footer-signature .signature {
+                font-size: 2.2rem;
+                /* 移动端更小的签名 */
+            }
+
+            .entrance-content {
+                width: 90%;
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 装饰元素 -->
+    <div class="decorative-border"></div>
+    <div class="corner-decoration corner-top-left"></div>
+    <div class="corner-decoration corner-top-right"></div>
+    <div class="corner-decoration corner-bottom-left"></div>
+    <div class="corner-decoration corner-bottom-right"></div>
+
+    <!-- 入口动画 -->
+    <div class="entrance">
+        <div class="entrance-content">
+            <h1>武汉之旅</h1>
+            <div class="guide-title">向导：</div>
+            <div class="signature">JiaXihang</div>
+            <button class="entrance-btn">开启旅程</button>
+        </div>
+    </div>
+
+    <!-- 主内容 -->
+    <div class="container">
+        <header>
+            <h1>武汉之旅</h1>
+        </header>
+
+        <!-- 第一天 -->
+        <div class="day-container">
+            <div class="day-title">
+                <div class="line"></div>
+                <h2>Day 1</h2>
+                <div class="line"></div>
+            </div>
+
+            <div class="location">——武昌——</div>
+
+            <div class="menu-item">
+                <div class="menu-title">早餐 · 特色</div>
+            </div>
+
+            <div class="menu-item">
+                <div class="menu-title">黄鹤楼</div>
+            </div>
+
+            <div class="menu-item">
+                <div class="menu-title">户部巷</div>
+            </div>
+
+            <div class="menu-item">
+                <div class="menu-title">昙华林</div>
+            </div>
+
+            <div class="menu-item">
+                <div class="menu-title">午餐 · 传统</div>
+            </div>
+
+            <div class="menu-item">
+                <div class="menu-title">湖北省博物馆</div>
+            </div>
+
+            <div class="menu-item">
+                <div class="menu-title">东湖</div>
+            </div>
+
+            <div class="menu-item">
+                <div class="menu-title">晚餐 · 创新</div>
+            </div>
+
+            <div class="menu-item">
+                <div class="menu-title">武昌江滩 · 夜景</div>
+            </div>
+
+            <div class="menu-item">
+                <div class="menu-title">汉口江滩 · 夜景</div>
+            </div>
+
+            <div class="menu-item">
+                <div class="menu-title">江汉路步行街</div>
+            </div>
+        </div>
+
+        <!-- 第二天 -->
+        <div class="day-container">
+            <div class="day-title">
+                <div class="line"></div>
+                <h2>Day 2</h2>
+                <div class="line"></div>
+            </div>
+
+            <div class="location">——汉口——</div>
+
+            <div class="menu-item">
+                <div class="menu-title">早餐 · 传统</div>
+            </div>
+
+            <div class="menu-item">
+                <div class="menu-title">黎黄陂路</div>
+            </div>
+
+            <div class="menu-item">
+                <div class="menu-title">汉口江滩 · 昼景</div>
+            </div>
+
+            <div class="menu-item">
+                <div class="menu-title">午餐 · 珍品</div>
+            </div>
+
+            <div class="menu-item">
+                <div class="menu-title">解放公园</div>
+            </div>
+
+            <div class="menu-item">
+                <div class="menu-title">古德寺</div>
+            </div>
+
+            <div class="menu-item">
+                <div class="menu-title">晚餐 · 非遗</div>
+            </div>
+
+            <div class="menu-item">
+                <div class="menu-title">武汉高铁站</div>
+            </div>
+
+            <!-- 页脚签名 -->
+            <div class="footer-signature">
+                <div class="footer-guide">向导：</div>
+                <div class="signature">JiaXihang</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 返回顶部按钮 -->
+    <div class="back-to-top">↑</div>
+
+    <script>
+        // 入口动画
+        document.addEventListener('DOMContentLoaded', function () {
+            const entrance = document.querySelector('.entrance');
+            const entranceBtn = document.querySelector('.entrance-btn');
+            const container = document.querySelector('.container');
+
+            entranceBtn.addEventListener('click', function () {
+                entrance.style.opacity = '0';
+                setTimeout(function () {
+                    entrance.style.display = 'none';
+                    container.style.opacity = '1';
+                    checkItemsVisibility();
+                }, 1500);
+            });
+
+            // 滚动显示元素
+            const items = document.querySelectorAll('.menu-item');
+
+            function checkItemsVisibility() {
+                items.forEach(function (item) {
+                    const itemTop = item.getBoundingClientRect().top;
+                    const windowHeight = window.innerHeight;
+
+                    if (itemTop < windowHeight - 100) {
+                        item.classList.add('visible');
+                    }
+                });
+            }
+
+            window.addEventListener('scroll', checkItemsVisibility);
+
+            // 返回顶部按钮
+            const backToTop = document.querySelector('.back-to-top');
+
+            window.addEventListener('scroll', function () {
+                if (window.pageYOffset > 300) {
+                    backToTop.classList.add('visible');
+                } else {
+                    backToTop.classList.remove('visible');
+                }
+            });
+
+            backToTop.addEventListener('click', function () {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
+
+<!-- 在head部分添加字体链接 -->
+<link href="https://fonts.cdnfonts.com/css/brittany-signature" rel="stylesheet">
