@@ -195,19 +195,6 @@
             border-left: none;
         }
 
-        /* 菜单项前小圆点 */
-        .menu-item .menu-title::before {
-            content: "";
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            background: #d4af37;
-            border-radius: 50%;
-            margin-right: 12px;
-            vertical-align: middle;
-            opacity: 0.7;
-        }
-
         /* 优化按钮设计 */
         .entrance-btn {
             margin-top: 2rem;
@@ -392,17 +379,47 @@
             letter-spacing: 0.3rem;
             position: relative;
             display: inline-block;
-            padding: 0.5rem 3rem;
+            padding: 0.5rem 2rem;
         }
 
         .location::before,
         .location::after {
-            content: "❦";
-            color: #d4af37;
-            font-size: 1.5rem;
+            content: "";
             position: absolute;
             top: 50%;
+            height: 1px;
+            /* 线条高度 */
+            width: 60px;
+            /* 线条宽度 */
+            background: rgba(212, 175, 55, 0.4);
+            /* 线条颜色和透明度 */
             transform: translateY(-50%);
+        }
+
+        .location::before {
+            left: -40px;
+            /* 调整左侧线条位置 */
+        }
+
+        .location::after {
+            right: -40px;
+            /* 调整右侧线条位置 */
+        }
+
+        /* 新增：在线条旁边添加小的装饰符号 */
+        .location span::before,
+        .location span::after {
+            content: "✦";
+            /* 使用与日期标题类似的符号 */
+            color: #d4af37;
+            font-size: 0.8rem;
+            /* 稍小尺寸 */
+            opacity: 0.7;
+            position: relative;
+            top: -3px;
+            /* 微调垂直位置 */
+            margin: 0 10px;
+            /* 与文字的间距 */
         }
 
         .location::before {
@@ -555,8 +572,33 @@
 
             .location {
                 font-size: 1.3rem;
-                padding: 0.5rem 1.5rem;
+                padding: 0.5rem 1rem;
                 margin: 2rem 0;
+            }
+
+            /* 调整响应式下的线条和装饰 */
+            .location::before,
+            .location::after {
+                width: 30px;
+                /* 缩短线条 */
+            }
+
+            .location::before {
+                left: -15px;
+                /* 调整位置 */
+            }
+
+            .location::after {
+                right: -15px;
+                /* 调整位置 */
+            }
+
+            .location span::before,
+            .location span::after {
+                font-size: 0.7rem;
+                /* 进一步缩小符号 */
+                margin: 0 5px;
+                /* 调整间距 */
             }
 
             .entrance h1 {
